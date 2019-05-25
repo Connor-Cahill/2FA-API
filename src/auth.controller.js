@@ -53,3 +53,19 @@ const SignIn = async (req, res) => {
   }
 }
 
+/**
+ * SignOut removes JWT token from cookies 
+ * logging user out
+ */
+const SignOut = async () => {
+    // removes cookie logging user out
+    res.clearCookie(process.env.COOKIE);
+    return res.sendStatus(200);
+}
+
+
+module.exports = {
+    SignIn,
+    SignUp,
+    SignOut,
+}
