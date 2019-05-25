@@ -27,3 +27,29 @@ const SignUp = async (req, res) => {
     // will return Status 200 if successful
     return IssueToken(user, res);
 }
+
+
+/**
+ * SignIn will check inputted credentials against users
+ * in database and if user exists with correct
+ * credentials returns JWT Token to say authenticated
+ */
+const SignIn = async (req, res) => {
+  // find user by email
+  const user = await User.findOne({ email: req.body.email }).exec();
+  // if there is no user, user doesnt exist yet
+  if (!user) {
+    // TODO: how to handle this?
+    // eslint-disable-next-line no-console
+    console.log('Email or password incorrect.');
+    return res.sendStatus(401);
+  } else if (!user.comparePassword(req.body.password)) {
+    // eslint-disable-next-line no-console
+    console.log('Email or password incorrect.');
+    return res.sendStatus(401);
+  } else {
+    // inputted credentials are correct, issue token
+    return IssueToken(user, res);
+  }
+}
+
