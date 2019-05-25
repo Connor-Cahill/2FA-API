@@ -13,3 +13,17 @@ const IssueToken = (user, res) => {
 }
 
 
+/**
+ * SignUp takes in inputted credential from request body
+ * and creates a new user / stores in database
+ */
+const SignUp = async (req, res) => {
+    // create new user with request body data
+    const user = new User(req.body);
+    // encrypt users password before saved
+    user.password = user.generateHash(req.body.password);
+    await user.save();
+    // issue cookie
+    // will return Status 200 if successful
+    return IssueToken(user, res);
+}
